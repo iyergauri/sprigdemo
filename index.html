@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapbox SDK Integration Demo</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='./styles.css' rel='stylesheet' />
+    <script src='./script.js'></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>bringing mapbox to sprig</h1>
+            <p>integrating mapbox geo-locating surveys!</p>
+        </div>
+
+        <div id="demo_area">
+            <div id="map_area">
+                <h3>demo map</h3>
+                <div id="map"></div>
+            </div>
+
+            <div class="controls">
+                <h3>demo controls</h3>
+                <button class="button" onclick="initializeSDK()">init sdk</button>
+            </div>
+        </div>
+
+  </div>
+
+
+</body>
+
+</html>
