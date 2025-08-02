@@ -1,5 +1,5 @@
 let map;
-mapboxgl.accessToken = 'pk.eyJ1IjoiZ2F1cmNvcmUiLCJhIjoiY21kdGsycWJuMTNobzJqcTNmYWNwazYxeSJ9.UxZYYRmBuYRiQMoVUATKQA';
+mapboxgl.accessToken = token;
 
 function initializeSDK() {
     map = new mapboxgl.Map({
@@ -12,8 +12,7 @@ function initializeSDK() {
     // SDK event listener - fires when map is ready
     map.on('load', function () {
         console.log('Mapbox SDK initialized successfully');
-        // console.log('Map style loaded: streets-v12');
-    });
+     });
 
     // SDK method: handle map errors
     map.on('error', function (e) {

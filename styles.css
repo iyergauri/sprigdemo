@@ -7,6 +7,7 @@ body {
 
 .container {
     margin: 0 auto;
+    padding: 0 5%;
 }
 
 .header {
@@ -19,14 +20,21 @@ body {
     justify-content: space-around;
 }
 
-#demo_area>* {
-    flex-direction: column;
-    max-width: 60%;
+#map_area {
+    max-width: 50%;
+}
+
+#demo_area > * {
+    flex: 1;
+}
+
+.controls {
+    max-width: 35%;
+    align-items: center;
 }
 
 #map {
-    min-height: 300px;
-    min-width: 500px;
+    height: 300px;
     border-radius: 1em;
     border: 2px solid gray;
     box-shadow: lightgray 0px 7px 29px 0px;
@@ -34,10 +42,13 @@ body {
 
 button {
     height: 50px;
-    min-width: 200px;
+    width: 200px;
     border-radius: 1em;
     border: 2px solid gray;
     background-color: gainsboro;
     font-family: "Funnel Sans", sans-serif;
+}
 
+button:hover {
+    cursor: pointer;
 }
