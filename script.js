@@ -1,20 +1,22 @@
 let map;
 let marker;
+let userPopup;
 
 const userLoc = [-122.397784, 37.784675];
+const userFinalLoc = [-122.4077, 37.7841];
 const geofence = [
-                [-122.4095, 37.7852],
-                [-122.4049, 37.7852],
-                [-122.4049, 37.7814],
-                [-122.4095, 37.7814],
-                [-122.4095, 37.7852] // closes rectangle
-            ];
+    [-122.4095, 37.7852],
+    [-122.4049, 37.7852],
+    [-122.4049, 37.7814],
+    [-122.4095, 37.7814],
+    [-122.4095, 37.7852] // closes rectangle
+];
 const goldenGate = '#c4352D';
 
 mapboxgl.accessToken = token;
 
-function enableButtons() {
-    const buttons = document.querySelectorAll('.initSuccess');
+function enableButtons(className) {
+    const buttons = document.querySelectorAll(className);
     buttons.forEach(b => {
         b.disabled = false;
     });
@@ -31,7 +33,7 @@ function initializeSDK() {
     // SDK event listener - fires when map is ready
     map.on('load', function () {
         console.log('Mapbox SDK initialized successfully');
-        enableButtons();
+        enableButtons('.initSuccess');
     });
 
     // SDK method: handle map errors
@@ -50,20 +52,22 @@ function createMockUser() {
         .addTo(map); // SDK method: add marker to map
 
     // SDK method: create popup for user marker
-    const userPopup = new mapboxgl.Popup(
-            {   
-                closeOnClick: true,
-                closeButton: false,
-                offset: 20,
-                className: 'popup',
-                anchor: 'right'
-            }
-        )
+    userPopup = new mapboxgl.Popup(
+        {
+            closeOnClick: true,
+            closeButton: false,
+            offset: 20,
+            className: 'popup',
+            anchor: 'right'
+        }
+    )
         .setHTML('<div>listening for user movement</div>')
         .setLngLat(userLoc);
 
     marker.setPopup(userPopup); // SDK method: attach popup to marker
     userPopup.addTo(map); // auto-open popup
+    setTimeout(() => userPopup.remove(), 5000); // auto-close after 5sec
+
 }
 
 function createGeofence() {
@@ -109,13 +113,63 @@ function createGeofence() {
     // SDK method: add click handler for geofence
     map.on('click', 'geofence-fill', function (e) {
         // SDK method: create popup on click
-        new mapboxgl.Popup({className: 'popup'})
+        new mapboxgl.Popup({
+            className: 'popup',
+            closeButton: false
+        })
             .setLngLat(e.lngLat)
             .setHTML('<div>user entering area triggers survey</div>')
             .addTo(map);
     });
 
-    geofenceAdded = true;
-    logEvent('✅ Geofence created successfully');
-    logEvent('SDK methods used: addSource(), addLayer(), on()');
+    enableButtons('.geoFenceSuccess');
+}
+
+function mockUserEntry() {
+    marker.setLngLat(userFinalLoc); // SDK method: update marker position
+
+    // SDK method: animate map to follow user
+    map.flyTo({
+        center: userFinalLoc,
+        zoom: 15,
+        duration: 2000
+    });
+
+    setTimeout(() => {
+        const entryPopup = new mapboxgl.Popup({
+            closeOnClick: false, 
+            className: 'popup',
+            closeButton: false
+        })
+            .setLngLat(userFinalLoc)
+            .setHTML('user at transit location! survey opportunity')
+            .addTo(map);
+
+        // auto-close after 5sec
+        setTimeout(() => entryPopup.remove(), 5000);
+    }, 2000);
+}
+
+function triggerSurvey() {
+    const userLocation = marker.getLngLat(); // SDK method
+    /* const surveyPopup = */
+    new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+        maxWidth: '300px'
+    })
+        .setLngLat(userLocation)
+        .setHTML(`
+                <div class="popup">
+                    <strong>location-based survey</strong><br><br>
+                    <strong>context:</strong> Powell St. Station <br>
+                    <strong>trigger:</strong> zone entry + 2min dwell<br><br>
+                    "Do you use BART or MUNI more often?"<br><br>
+                    <small>Expected response rate: 67% (vs 25% baseline)</small>
+                </div>
+            `)
+        .addTo(map);
+
+    // auto-close after 5sec?
+    /* setTimeout(() => surveyPopup.remove(), 5000); */
 }

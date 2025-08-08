@@ -3,6 +3,9 @@
 body {
     padding: 20px;
     font-family: "Funnel Sans", sans-serif;
+    background-color: #d4d88a;
+    color: #274e13;
+    height: 100%;
 }
 
 .container {
@@ -34,10 +37,11 @@ body {
 }
 
 #map {
-    height: 300px;
+    height: 60vh;
+    background-color: #fffdf3;
     border-radius: 1em;
-    border: 2px solid gray;
-    box-shadow: lightgray 0px 7px 29px 0px;
+    border: 2px solid #274e13;
+    box-shadow: #274e13 0px 7px 29px 0px;
 }
 
 button {
@@ -46,8 +50,9 @@ button {
     height: 50px;
     width: 200px;
     border-radius: 1em;
-    border: 2px solid gray;
-    background-color: gainsboro;
+    border: 2px solid #274e13;
+    background-color: #274e13;
+    color: #fffdf3;
     font-family: "Funnel Sans", sans-serif;
 }
 
@@ -57,16 +62,16 @@ button:hover {
 
 button:disabled {
     cursor: not-allowed;
-    background-color: white;
-    border-color: lightgray;
+    background-color: #fffdf3;
+    border: 2px solid lightgray;
+    color: lightgray;
 }
 
 .popup {
     font-family: "Funnel Sans", sans-serif;
     padding: 0;
     offset: 10px;
-    /* transition-delay: 1s; */
-    animation: fadeIn 2s ease-in forwards;
+    animation: fadeIn .5s ease-in forwards;
 
 }
 
