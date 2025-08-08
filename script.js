@@ -137,7 +137,7 @@ function mockUserEntry() {
 
     setTimeout(() => {
         const entryPopup = new mapboxgl.Popup({
-            closeOnClick: false, 
+            closeOnClick: true,
             className: 'popup',
             closeButton: false
         })
@@ -152,10 +152,15 @@ function mockUserEntry() {
 
 function triggerSurvey() {
     const userLocation = marker.getLngLat(); // SDK method
-    /* const surveyPopup = */
-    new mapboxgl.Popup({
+    const point = map.project(userLocation);
+    const features = map.queryRenderedFeatures(point, {
+        layers: ['geofence-fill']
+    });
+
+    if (features.length > 0) { // sort of a hack-y way to see if we're inside the layer
+        new mapboxgl.Popup({
         closeButton: false,
-        closeOnClick: false,
+        closeOnClick: true,
         maxWidth: '300px'
     })
         .setLngLat(userLocation)
@@ -170,6 +175,10 @@ function triggerSurvey() {
             `)
         .addTo(map);
 
+    } else {
+        alert('user not in high-engagement zone yet!')
+    }
+    
     // auto-close after 5sec?
     /* setTimeout(() => surveyPopup.remove(), 5000); */
 }
